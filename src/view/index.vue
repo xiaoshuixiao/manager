@@ -16,17 +16,11 @@
 
     <el-container>
       <!-- 导航 -->
-      <el-aside width="200px" >
+      <el-aside width="200px">
         <!-- <el-col :span="12">
             <h5>默认颜色</h5>
         上面的盒子不要就没有线-->
-        <el-menu
-          default-active="2"
-          class="el-menu-vertical-demo"
-          @open="handleOpen"
-          @close="handleClose"
-          :unique-opened="false"
-        >
+        <el-menu default-active="2" class="el-menu-vertical-demo" :unique-opened="true">
           <el-submenu index="1">
             <template slot="title">
               <i class="el-icon-location"></i>
@@ -52,7 +46,6 @@
               <i class="el-icon-menu"></i>选项2
             </el-menu-item>
           </el-submenu>
-          
         </el-menu>
         <!-- </el-col> -->
       </el-aside>
@@ -64,7 +57,40 @@
 
 <script>
 export default {
-  name: "index"
+  name: "index",
+  methods: {
+    logOut() {
+      const h = this.$createElement;
+      this.$msgbox({
+        title: "消息",
+        message: h("p", null, [h("i", { style: "color: teal" }, "呵呵哒")]),
+        showCancelButton: true,
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        beforeClose: (action, instance, done) => {
+          if (action === "confirm") {
+            instance.confirmButtonLoading = true;
+            instance.confirmButtonText = "退出中...";
+            setTimeout(() => {
+              done();
+              setTimeout(() => {
+                instance.confirmButtonLoading = false;
+              }, 100);
+              this.$router.push("./login");
+               window.localStorage.removeItem("token");
+            }, 300);
+          } else {
+            done();
+          }
+        }
+      }).then(action => {
+        this.$message({
+          type: "info",
+          message: "回去吧"
+        });
+      });
+    }
+  }
 };
 </script>
 
