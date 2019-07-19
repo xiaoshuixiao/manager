@@ -76,8 +76,8 @@ export default {
               setTimeout(() => {
                 instance.confirmButtonLoading = false;
               }, 100);
-              this.$router.push("./login");
                window.localStorage.removeItem("token");
+              this.$router.push("./login");
             }, 300);
           } else {
             done();
